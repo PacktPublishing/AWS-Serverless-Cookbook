@@ -1,4 +1,4 @@
-const im = require('imagemagick');
+const im = require('imagemagick'); 
 const fs = require('fs');
 const os = require('os');
 const uuidv4 = require('uuid/v4');
