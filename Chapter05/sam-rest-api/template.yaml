@@ -1,0 +1,60 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: REST API using SAM
+
+Globals:
+  Function:
+    Runtime: nodejs10.x
+    Environment:
+      Variables:
+        TABLE_NAME: !Ref UsersTable
+    MemorySize: 128
+    Timeout: 5
+
+Resources:
+  UsersTable:
+    Type: AWS::Serverless::SimpleTable
+    Properties:
+      PrimaryKey:
+        Name: userid
+        Type: String
+      ProvisionedThroughput:
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
+
+  GetUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: get.handler
+      Policies: AmazonDynamoDBReadOnlyAccess
+      Events:
+        GetUserApi:
+          Type: Api
+          Properties: 
+            Path: /user/{userid}
+            Method: get
+
+  PostUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: post.handler
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        PostUserApi:
+          Type: Api
+          Properties: 
+            Path: /user/{userid}
+            Method: post
+
+  DeleteUser:
+    Type: AWS::Serverless::Function
+    Properties:
+      Handler: delete.handler
+      Policies: AmazonDynamoDBFullAccess
+      Events:
+        DeleteUserApi:
+          Type: Api
+          Properties: 
+            Path: /user/{userid}
+            Method: delete
+            
