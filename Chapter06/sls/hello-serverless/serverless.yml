@@ -1,0 +1,17 @@
+service: hello-serverless # NOTE: update this with your service name
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+
+functions:
+  hello:
+    handler: handler.hello
+
+  add:
+    handler: add.add
+    events:
+      - http:
+          path: math/add
+          method: post
+          cors: true
