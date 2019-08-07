@@ -1,0 +1,20 @@
+
+service: sls-cicd
+#app: your-app-name
+#tenant: your-tenant-name
+
+provider:
+  name: aws
+  runtime: nodejs10.x
+  stage: dev
+  region: us-west-2
+  memorySize: 128
+  timeout: 3
+
+functions:
+  logger:
+    handler: handler.logger
+    events:
+      - http:
+          path: message
+          method: get
